@@ -24,4 +24,9 @@ public class Item {
 
     @Column(name = "safety_stock", nullable = false)
     private Integer safetyStock;
+
+    public void update(String itemName, Integer safetyStock){
+        this.itemName = itemName;
+        this.safetyStock = safetyStock;
+    }
 }

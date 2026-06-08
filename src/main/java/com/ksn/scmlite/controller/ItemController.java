@@ -19,8 +19,24 @@ public class ItemController {
         return itemService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Item findById(@PathVariable Long id){
+        return itemService.findbyid(id);
+    }
+
     @PostMapping
     public Item save(@RequestBody Item item) {
         return itemService.save(item);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(Long id){
+        itemService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public Item update(@PathVariable Long id, @RequestBody Item item){
+        return itemService.update(id, item);
+    }
+
 }
