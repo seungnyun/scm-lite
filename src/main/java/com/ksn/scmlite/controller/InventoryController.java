@@ -1,6 +1,7 @@
 package com.ksn.scmlite.controller;
 
-import com.ksn.scmlite.entity.Inventory;
+import com.ksn.scmlite.dto.InventoryRequest;
+import com.ksn.scmlite.dto.InventoryResponse;
 import com.ksn.scmlite.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +16,23 @@ public class InventoryController {
     private final InventoryService inventoryService;
 
     @GetMapping
-    public List<Inventory> findAll(){
+    public List<InventoryResponse> findAll(){
         return inventoryService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Inventory findById(@PathVariable Long id){
+    public InventoryResponse findById(@PathVariable Long id){
         return inventoryService.findById(id);
     }
 
     @PostMapping
-    public Inventory save(@RequestBody Inventory inventory){
-        return inventoryService.save(inventory);
+    public InventoryResponse save(@RequestBody InventoryRequest request){
+        return inventoryService.save(request);
     }
 
     @PutMapping("/{id}")
-    public Inventory updateQuantity(@PathVariable Long id, @RequestBody Inventory inventory){
-        return inventoryService.updateQuantity(id, inventory.getQuantity());
+    public InventoryResponse update(@PathVariable Long id, @RequestBody InventoryRequest request){
+        return inventoryService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
