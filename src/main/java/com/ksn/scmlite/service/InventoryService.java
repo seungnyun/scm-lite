@@ -2,9 +2,11 @@ package com.ksn.scmlite.service;
 
 import com.ksn.scmlite.dto.InventoryRequest;
 import com.ksn.scmlite.dto.InventoryResponse;
+import com.ksn.scmlite.dto.InventorySearchRequest;
 import com.ksn.scmlite.entity.Inventory;
 import com.ksn.scmlite.entity.Item;
 import com.ksn.scmlite.entity.Warehouse;
+import com.ksn.scmlite.repository.InventoryQueryRepository;
 import com.ksn.scmlite.repository.InventoryRepository;
 import com.ksn.scmlite.repository.ItemRepository;
 import com.ksn.scmlite.repository.WarehouseRepository;
@@ -22,6 +24,8 @@ public class InventoryService {
     private final ItemRepository itemRepository;
     private final WarehouseRepository warehouseRepository;
 
+    private final InventoryQueryRepository inventoryQueryRepository;
+
     public List<InventoryResponse> findAll(){
         return inventoryRepository.findAll().stream().map(this::toResponse).toList();
     }
@@ -31,6 +35,10 @@ public class InventoryService {
                 .orElseThrow();
 
         return toResponse(inventory);
+    }
+
+    public List<InventoryResponse> search(InventorySearchRequest request){
+        return inventoryQueryRepository.search(request);
     }
 
     public InventoryResponse save(InventoryRequest request){

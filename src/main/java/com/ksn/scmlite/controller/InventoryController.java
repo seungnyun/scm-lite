@@ -2,6 +2,7 @@ package com.ksn.scmlite.controller;
 
 import com.ksn.scmlite.dto.InventoryRequest;
 import com.ksn.scmlite.dto.InventoryResponse;
+import com.ksn.scmlite.dto.InventorySearchRequest;
 import com.ksn.scmlite.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,11 @@ public class InventoryController {
     @GetMapping("/{id}")
     public InventoryResponse findById(@PathVariable Long id){
         return inventoryService.findById(id);
+    }
+
+    @GetMapping("/search")
+    public List<InventoryResponse> search(@ModelAttribute InventorySearchRequest request){
+        return inventoryService.search(request);
     }
 
     @PostMapping
