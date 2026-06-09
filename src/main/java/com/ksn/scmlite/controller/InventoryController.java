@@ -5,6 +5,8 @@ import com.ksn.scmlite.dto.InventoryResponse;
 import com.ksn.scmlite.dto.InventorySearchRequest;
 import com.ksn.scmlite.service.InventoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +29,8 @@ public class InventoryController {
     }
 
     @GetMapping("/search")
-    public List<InventoryResponse> search(@ModelAttribute InventorySearchRequest request){
-        return inventoryService.search(request);
+    public Page<InventoryResponse> search(@ModelAttribute InventorySearchRequest request, Pageable pageable){
+        return inventoryService.search(request, pageable);
     }
 
     @PostMapping

@@ -5,8 +5,14 @@ import com.ksn.scmlite.dto.InventorySearchRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -20,7 +26,7 @@ public class InventoryQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<InventoryResponse> search(InventorySearchRequest request){
+    public Page<InventoryResponse> search(InventorySearchRequest request, Pageable pageable){
         BooleanBuilder builder = new BooleanBuilder();
 
         if (request.itemCode() != null && !request.itemCode().isBlank()){
@@ -31,7 +37,7 @@ public class InventoryQueryRepository {
             builder.and(warehouse.warehouseCode.startsWith(request.warehouseCode()));
         }
 
-        return queryFactory
+        JPAQuery<InventoryResponse> query = queryFactory
                 .select(Projections.constructor(
                         InventoryResponse.class,
                         inventory.id,
@@ -41,11 +47,41 @@ public class InventoryQueryRepository {
                         warehouse.id,
                         warehouse.warehouseCode,
                         warehouse.warehouseName,
-                        inventory.quantity))
+                        inventory.quantity
+                ))
+                .from(inventory)
+                .join(inventory.item, item)
+                .join(inventory.warehouse, warehouse)
+                .where(builder);
+
+        for (Sort.Order order : pageable.getSort()) {
+            if (order.getProperty().equals("quantity")) {
+                query.orderBy(
+                        order.isAscending()
+                                ? inventory.quantity.asc()
+                                : inventory.quantity.desc()
+                );
+            }
+        }
+
+        List<InventoryResponse> content = query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long total = queryFactory
+                .select(inventory.count())
                 .from(inventory)
                 .join(inventory.item, item)
                 .join(inventory.warehouse, warehouse)
                 .where(builder)
-                .fetch();
+                .fetchOne();
+
+        return new PageImpl<>(
+                content,
+                pageable,
+                total == null ? 0 : total
+        );
+
     }
 }
