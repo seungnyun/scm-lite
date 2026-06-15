@@ -1,7 +1,7 @@
 # 📦 SCM Lite
 
-> Spring Boot 기반 재고관리(Inventory Management) 학습 프로젝트<br>
-> MES/WMS 실무 경험을 바탕으로 SCM 영역 중 **재고관리 기능을 Spring Boot로 재구현**하며 학습하는 프로젝트입니다.
+> Spring Boot 기반 재고관리(Inventory Management) 프로젝트<br>
+> MES/WMS 실무 경험을 바탕으로 **재고관리 기능을 Spring Boot로 재구현**하는 프로젝트입니다.
 
 ![Java](https://img.shields.io/badge/Java-21-blue)
 ![Spring Boot](https://img.shields.io/badge/SpringBoot-3.5-green)
@@ -15,7 +15,7 @@
 
 실무에서는 C# WinForms, MSSQL, Stored Procedure 을 사용하지만, 본 프로젝트에서는 Spring Boot, JPA, QueryDSL을 활용하여 재고관리 영역을 새롭게 구현하며 Spring 생태계를 학습하는 것을 목표로 하고 있습니다.
 
-SCM Lite는 SCM 전체를 구현하는 프로젝트가 아니라, SCM의 핵심 기능 중 하나인 **재고관리 영역을 단계적으로 구현하고 확장해 나가는 프로젝트**입니다.
+SCM Lite는 SCM 전체를 구현하는 프로젝트가 아니라, 핵심 기능 중 하나인 **재고관리 영역을 단계적으로 구현하고 확장해 나가는 프로젝트**입니다.
 
 ---
 
