@@ -2,6 +2,7 @@ package com.ksn.scmlite.repository;
 
 import com.ksn.scmlite.dto.InventoryResponse;
 import com.ksn.scmlite.dto.InventorySearchRequest;
+import com.ksn.scmlite.dto.InventoryShortageResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -83,5 +84,27 @@ public class InventoryQueryRepository {
                 total == null ? 0 : total
         );
 
+    }
+
+    public List<InventoryShortageResponse> findShortageInventories() {
+        return queryFactory
+                .select(Projections.constructor(
+                        InventoryShortageResponse.class,
+                        inventory.id,
+                        item.id,
+                        item.itemCode,
+                        item.itemName,
+                        warehouse.id,
+                        warehouse.warehouseCode,
+                        warehouse.warehouseName,
+                        inventory.quantity,
+                        item.safetyStock,
+                        item.safetyStock.subtract(inventory.quantity)
+                ))
+                .from(inventory)
+                .join(inventory.item, item)
+                .join(inventory.warehouse, warehouse)
+                .where(inventory.quantity.lt(item.safetyStock))
+                .fetch();
     }
 }

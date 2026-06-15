@@ -1,14 +1,15 @@
 package com.ksn.scmlite.service;
 
 import com.ksn.scmlite.dto.InventoryMovementRequest;
+import com.ksn.scmlite.dto.InventoryMovementResponse;
+import com.ksn.scmlite.dto.InventoryMovementSearchRequest;
 import com.ksn.scmlite.entity.*;
-import com.ksn.scmlite.repository.InventoryMovementRepository;
-import com.ksn.scmlite.repository.InventoryRepository;
-import com.ksn.scmlite.repository.ItemRepository;
-import com.ksn.scmlite.repository.WarehouseRepository;
+import com.ksn.scmlite.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,8 @@ public class InventoryMovementService {
     private final WarehouseRepository warehouseRepository;
     private final InventoryRepository inventoryRepository;
     private final InventoryMovementRepository inventoryMovementRepository;
+
+    private final InventoryMovementQueryRepository inventoryMovementQueryRepository;
 
     @Transactional
     public void inbound(InventoryMovementRequest request){
@@ -67,6 +70,10 @@ public class InventoryMovementService {
         inventoryMovementRepository.save(movement);
 
         inventory.setQuantity(inventory.getQuantity() - request.quantity());
+    }
+
+    public List<InventoryMovementResponse> search(InventoryMovementSearchRequest request){
+        return  inventoryMovementQueryRepository.search(request);
     }
 
 }

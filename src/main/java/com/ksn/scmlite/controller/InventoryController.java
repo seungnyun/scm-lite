@@ -3,6 +3,7 @@ package com.ksn.scmlite.controller;
 import com.ksn.scmlite.dto.InventoryRequest;
 import com.ksn.scmlite.dto.InventoryResponse;
 import com.ksn.scmlite.dto.InventorySearchRequest;
+import com.ksn.scmlite.dto.InventoryShortageResponse;
 import com.ksn.scmlite.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,5 +47,10 @@ public class InventoryController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         inventoryService.delete(id);
+    }
+
+    @GetMapping("/shortage")
+    public List<InventoryShortageResponse> findShortageInventories(){
+        return inventoryService.findShortageInventories();
     }
 }

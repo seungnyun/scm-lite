@@ -3,6 +3,7 @@ package com.ksn.scmlite.service;
 import com.ksn.scmlite.dto.InventoryRequest;
 import com.ksn.scmlite.dto.InventoryResponse;
 import com.ksn.scmlite.dto.InventorySearchRequest;
+import com.ksn.scmlite.dto.InventoryShortageResponse;
 import com.ksn.scmlite.entity.Inventory;
 import com.ksn.scmlite.entity.Item;
 import com.ksn.scmlite.entity.Warehouse;
@@ -88,5 +89,9 @@ public class InventoryService {
                 inventory.getWarehouse().getWarehouseName(),
                 inventory.getQuantity()
         );
+    }
+
+    public List<InventoryShortageResponse> findShortageInventories() {
+        return inventoryQueryRepository.findShortageInventories();
     }
 }
